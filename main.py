@@ -2,6 +2,7 @@ from time import time
 from fastapi import FastAPI, __version__
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, File, UploadFile
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -33,3 +34,8 @@ async def root():
 @app.get('/ping')
 async def hello():
     return {'res': 'pong', 'version': __version__, "time": time()}
+
+@app.post("/upload-image/")
+async def create_upload_file(file: UploadFile = File(...)):
+    print(f"{file.filename}")
+    return "successful"
